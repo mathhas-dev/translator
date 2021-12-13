@@ -1,7 +1,7 @@
 import React from 'react'
 import { Header, Image } from 'semantic-ui-react'
 import logoImage from 'assets/logo.png'
-import './EmptyPage.css'
+import './StaticPage.css'
 
 const EmptyPanel = props => {
   return (
@@ -18,7 +18,7 @@ const EmptyPanel = props => {
         size='medium'
         textAlign='center'
       >
-        Base
+        My Translator
       </Header>
       <Header sub inverted
         textAlign='center'
@@ -31,15 +31,15 @@ const EmptyPanel = props => {
   )
 }
 
-const EmptyPage = props => {
+const StaticPage = props => {
   const { showLeftPanel, showRightPanel } = props
   return (
     <div className='empty-page'>
-      {showLeftPanel ? <EmptyPanel /> : null}
-      {props.children}
-      {showRightPanel ? <EmptyPanel /> : null}
+      { showLeftPanel ? <EmptyPanel /> : null }
+      { props.children }
+      { showRightPanel ? <EmptyPanel /> : null }
     </div>
   )
 }
 
-export default EmptyPage
+export default StaticPage

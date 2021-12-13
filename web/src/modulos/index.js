@@ -1,9 +1,11 @@
 import user from './User/config'
+import translator from './Translator/config'
 
 /*
-As rotas exportadas aqui são usadas pelo Routes.js
+Exported routes, are used by Routes.js
 */
 
 export {
     user,
+    translator
 }

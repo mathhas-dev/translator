@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 import { userStore } from 'stores'
 
 const User = React.lazy(() => import('modulos/User'))
+const Translator = React.lazy(() => import('modulos/Translator'))
 
 const Routes = props => {
   const forceLogin = useRestrito()
@@ -17,6 +18,11 @@ const Routes = props => {
 
   return (
     <Switch>
+
+      <Route
+        path='/translator'
+        component={Translator}
+      />
 
       <Route
         path='/'
