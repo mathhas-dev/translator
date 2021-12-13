@@ -163,3 +163,18 @@ class MethodField(SerializerMethodField):
     def to_representation(self, value):
         method = getattr(self.parent, self.method_name)
         return method(value, **self.func_kwargs)
+
+class SimpleResourceCore(viewsets.ModelViewSet):
+    def get_queryset(self, *args, **kwargs):
+        s = self.get_business()
+
+        if (hasattr(self, 'getting_object') and
+            self.getting_object is True and
+                hasattr(s, 'single')):
+            self.queryset = s.single()
+        else:
+            self.queryset = s.list()
+        return super().get_queryset()
+
+    def get_object(self):
+        self.getting_object = True
