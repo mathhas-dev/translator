@@ -33,7 +33,9 @@ const parseError = (error) => {
 const translatorStore = observable({
   _id: null,
   dados: {
-    text: "",
+    original_text: "",
+    translated_text: "",
+    translation_mode: ""
   },
   searching: false,
   loading: false,
@@ -43,7 +45,9 @@ const translatorStore = observable({
   reset: function () {
     this._id = null;
     this.dados = {
-      text: "",
+      original_text: "",
+      translated_text: "",
+      translation_mode: ""
     };
     this.message = null;
     this.error = null;

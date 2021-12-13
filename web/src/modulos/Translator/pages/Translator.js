@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import Page from 'pageTemplates/StaticPage'
-import { useHistory } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import {
     Message,
@@ -12,12 +11,12 @@ import {
     TextArea,
     Button,
     Select,
-    Icon
+    Icon,
+    Label,
 } from 'semantic-ui-react'
 import { translatorStore } from '../stores'
-import { useTranslation } from "react-i18next";
 
-const FormTranslator = (props) => {
+const FormTranslator = observer((props) => {
 
     return (
         <>
@@ -25,7 +24,7 @@ const FormTranslator = (props) => {
                 <Grid columns='equal'>
                     <GridRow centered >
                         <Select />
-                        <Icon name="arrow alternate circle right outline" size="big"/>
+                        <Icon name="arrow alternate circle right outline" size="big" />
                         <Select />
                     </GridRow>
                     <GridRow>
@@ -44,26 +43,35 @@ const FormTranslator = (props) => {
         </>
     )
 }
+)
 
-const ContentTranslator = (props) => {
+const ContentTranslator = observer((props) => {
 
     return (
         <>
-            <Grid textAlign='center' style={{ height: '80vh' }} verticalAlign='middle'>
+            <Grid textAlign='center' style={{ paddingTop: '10vh' }} centered>
+                <Header size='huge'>My Translator</Header>
+            </Grid>
+            <Grid textAlign='center' style={{ height: '70vh' }} verticalAlign='middle'>
                 <Grid.Column style={{ maxWidth: '90%' }}>
 
                     <Message
                         hidden={translatorStore.message === null}
                         {...translatorStore.message}
                     />
+
                     <FormTranslator />
+
                 </Grid.Column>
+            </Grid>
+            <Grid textAlign='center' style={{ paddingTop: '10vh' }} centered>
+                <Label size='small' basic>My Translator is made with <Icon name='heart' />by Matheus using IBM Watson</Label>
             </Grid>
         </>
     )
-}
+})
 
-const Translator = (props) => {
+const Translator = observer((props) => {
 
     return (
         <Page showLeftPanel >
@@ -72,6 +80,6 @@ const Translator = (props) => {
             </div>
         </Page >
     )
-}
+})
 
 export default Translator;
