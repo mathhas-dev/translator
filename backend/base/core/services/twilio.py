@@ -1,4 +1,4 @@
-from twilio.rest import Client
+# from twilio.rest import Client
 
 from django.conf import settings
 
@@ -9,8 +9,8 @@ class SMSService:
     TWILIO_SENDER = settings.TWILIO_SENDER
     DEBUG = settings.DEBUG
 
-    def __init__(self):
-        self.client = Client(self.TWILIO_ACCOUNT_SID, self.TWILIO_AUTH_TOKEN)
+    # def __init__(self):
+    #     self.client = Client(self.TWILIO_ACCOUNT_SID, self.TWILIO_AUTH_TOKEN)
 
     def send(self, numero, mensagem):
         if self.DEBUG:

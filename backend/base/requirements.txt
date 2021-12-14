@@ -14,8 +14,6 @@ python-decouple==3.4
 django-guardian==2.4.0
 sendgrid==6.7.1
 Pillow==8.3.1
-twilio==6.62.1
-django-twilio==0.13.1
 PyMySQL==1.0.2
 wheel==0.37.0
 mysqlclient==2.0.3
