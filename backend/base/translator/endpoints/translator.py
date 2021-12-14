@@ -4,7 +4,7 @@ from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework import status
 from translator.business import TranslatorService
-from translator.validator import TranslatorValidator
+from translator.validators import TranslatorValidator
 
 
 class UserResource(SimpleResourceCore):
