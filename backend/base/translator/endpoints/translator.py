@@ -20,6 +20,7 @@ class TranslatorResource(SimpleResourceCore):
         try:
             service = WatsonConnection()
             data = service.get_languages()
+            
             if data is None:
                 message = "Something went wrong, no data was returned!"
                 return Response(message, status=status.HTTP_404_NOT_FOUND)
@@ -34,7 +35,8 @@ class TranslatorResource(SimpleResourceCore):
             data = request.data
             service = TranslatorService()
             data = service.translate(
-                request.data['text'], request.data['base_language'], request.data['target_language'])
+                data['text'], data['base_language'], data['target_language'])
+
             if data is None:
                 message = "Something went wrong, no data was returned!"
                 return Response(message, status=status.HTTP_404_NOT_FOUND)

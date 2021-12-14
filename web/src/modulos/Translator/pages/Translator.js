@@ -13,30 +13,77 @@ import {
     Select,
     Icon,
     Label,
+    Loader
 } from 'semantic-ui-react'
-import { translatorStore } from '../stores'
+import { translatorStore, languages } from '../stores'
+import { language_to_option } from 'utils'
+import { useTranslation } from "react-i18next";
 
 const FormTranslator = observer((props) => {
+    const list = languages.list.languages;
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        languages.reload();
+    }, [])
+
+    const handleChangeSelect = prop => (event, { value }) => {
+        translatorStore.dados[prop] = value
+    }
+
+    const handleChange = (event, { value }) => {
+        translatorStore.dados.text = value
+        console.log(translatorStore.dados.text)
+    }
 
     return (
         <>
             <Form>
                 <Grid columns='equal'>
                     <GridRow centered >
-                        <Select />
-                        <Icon name="arrow alternate circle right outline" size="big" />
-                        <Select />
+                        <Select
+                            placeholder={t("Base Language")}
+                            options={list ? language_to_option(list) : []}
+                            value={translatorStore.dados.base_language !== "" ? translatorStore.dados.base_language : null}
+                            onChange={handleChangeSelect('base_language')}
+                            search
+                            selection
+                        />
+                        {
+                            translatorStore.sending
+                                ?
+                                <Loader active inline />
+                                :
+                                <Icon name="arrow alternate circle right outline" size="big" />
+                        }
+                        <Select
+                            placeholder={t("Target Language")}
+                            options={list ? language_to_option(list) : []}
+                            value={translatorStore.dados.target_language !== "" ? translatorStore.dados.target_language : null}
+                            onChange={handleChangeSelect('target_language')}
+                            search
+                            selection
+                        />
                     </GridRow>
                     <GridRow>
                         <GridColumn >
-                            <TextArea rows={10} />
+                            <TextArea
+                                rows={10}
+                                onChange={handleChange}
+                            />
                         </GridColumn>
                         <GridColumn >
-                            <TextArea rows={10} />
+                            <TextArea
+                                rows={10}
+                                value={translatorStore.dados.translated_text}
+                            />
                         </GridColumn>
                     </GridRow>
                     <GridRow centered>
-                        <Button primary>Translate!</Button>
+                        <Button primary
+                            content={t("Translate!")}
+                            onClick={() => translatorStore.translate()}
+                        />
                     </GridRow>
                 </Grid>
             </Form>
@@ -49,15 +96,19 @@ const ContentTranslator = observer((props) => {
 
     return (
         <>
-            <Grid textAlign='center' style={{ paddingTop: '10vh' }} centered>
+            <Grid textAlign='center' style={{ paddingTop: '20vh' }} centered>
                 <Header size='huge'>My Translator</Header>
             </Grid>
-            <Grid textAlign='center' style={{ height: '70vh' }} verticalAlign='middle'>
+            <Grid textAlign='center' style={{ height: '60vh' }} verticalAlign='middle'>
                 <Grid.Column style={{ maxWidth: '90%' }}>
 
                     <Message
                         hidden={translatorStore.message === null}
                         {...translatorStore.message}
+                    />
+                    <Message
+                        hidden={languages.message === null}
+                        {...languages.message}
                     />
 
                     <FormTranslator />

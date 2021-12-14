@@ -3,17 +3,9 @@ import { Rest } from 'application/rest';
 import { observable, action } from 'mobx';
 import i18n from "i18next";
 
-
-const doGet = async (id) => {
-  const rest = new Rest('translator');
-  rest.api = 'access/api';
-  const response = await rest.get(id);
-  return await response.json();
-}
-
-const doPost = async (data) => {
-  const rest = new Rest('translator');
-  rest.api = 'access/api';
+const doPost = async (data, endpoint) => {
+  const rest = new Rest(`translator/${endpoint}`);
+  rest.api = 'translator/api';
   const response = await rest.post(data);
   return await response.json();
 }
@@ -31,13 +23,12 @@ const parseError = (error) => {
 }
 
 const translatorStore = observable({
-  _id: null,
   dados: {
-    original_text: "",
-    translated_text: "",
-    translation_mode: ""
+    text: "",
+    base_language: "",
+    target_language: "",
+    translated_text: ""
   },
-  searching: false,
   loading: false,
   sending: false,
   message: null,
@@ -45,9 +36,10 @@ const translatorStore = observable({
   reset: function () {
     this._id = null;
     this.dados = {
-      original_text: "",
-      translated_text: "",
-      translation_mode: ""
+      text: "",
+      base_language: "",
+      target_language: "",
+      translated_text: ""
     };
     this.message = null;
     this.error = null;
@@ -58,34 +50,19 @@ const translatorStore = observable({
     return this.error !== null && this.error.hasOwnProperty(field) ?
       parseError(this.error[field]) : null
   },
-  set id(id) {
-    this.reset();
-    if (id) this._id = id
-    const that = this;
-    doGet(id).then(response => {
-      that.dados = response;
-    }).catch(error => {
-      console.log(error);
-    }).finally(() => {
-      that.loading = false;
-    });
-  },
-  get id() {
-    return this._id;
-  },
-  send: async function () {
+  translate: async function () {
     this.sending = true;
-
     try {
       let response;
-      response = await doPost(this.dados);
-      this.dados = response;
+      response = await doPost(this.dados, 'do_translation');
+      this.dados.translated_text = response.translations[0].translation;
       this.error = null;
+      this.message = null;
     } catch (error) {
       this.error = error;
       this.message = {
         content:
-          i18n.t("Error translating!"),
+          i18n.t("Sorry, we don't have translations for these languages yet..."),
         error: true,
       };
     } finally {
@@ -93,7 +70,7 @@ const translatorStore = observable({
     }
   },
 }, {
-  send: action,
+  translate: action,
   reset: action,
 });
 

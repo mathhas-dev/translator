@@ -99,6 +99,14 @@ const date_format = (date) => {
   return new Date(date)
 }
 
+const language_to_option = (list) => {
+  return list.map(item => ({
+    key: item.language,
+    text: item.name,
+    value: item.language
+  }))
+}
+
 export {
   deepClone,
   fieldError,
@@ -108,5 +116,6 @@ export {
   uuidv4,
   to_option,
   CPF_Mask,
-  date_format
+  date_format,
+  language_to_option
 }
